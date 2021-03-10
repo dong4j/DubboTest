@@ -13,10 +13,14 @@ import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameterList;
 import com.intellij.psi.PsiReferenceExpression;
-import com.intellij.ui.content.Content;
+import com.intellij.ui.tabs.TabInfo;
+import com.yanglx.dubbo.test.CacheInfo;
+import com.yanglx.dubbo.test.DubboSetingState;
 import com.yanglx.dubbo.test.PluginConstants;
 import com.yanglx.dubbo.test.dubbo.DubboMethodEntity;
 import com.yanglx.dubbo.test.ui.DubboPanel;
+import com.yanglx.dubbo.test.ui.Tab;
+import com.yanglx.dubbo.test.ui.TabBar;
 
 import java.util.Objects;
 
@@ -117,24 +121,28 @@ public class PluginUtils {
         String methodName = psiMethod.getName();
 
         ToolWindow toolWindow = ToolWindowManager
-            .getInstance(Objects.requireNonNull(project))
-            .getToolWindow(PluginConstants.PLUGIN_NAME);
+                .getInstance(Objects.requireNonNull(project))
+                .getToolWindow(PluginConstants.PLUGIN_NAME);
         if (toolWindow != null) {
             // 无论当前状态为关闭/打开，进行强制打开 ToolWindow
             toolWindow.show(() -> {
 
             });
-            Content[] contents = toolWindow.getContentManager().getContents();
-            if (contents[0].getComponent() instanceof DubboPanel) {
-                DubboPanel dubboPanel1 = (DubboPanel) contents[0].getComponent();
-                DubboMethodEntity dubboMethodEntity = new DubboMethodEntity();
-                dubboMethodEntity.setInterfaceName(interfaceName);
-                dubboMethodEntity.setParamObj(initParamArray);
-                dubboMethodEntity.setMethodType(methodType);
-                dubboMethodEntity.setMethodName(methodName);
-                DubboPanel.refreshUI(dubboPanel1, dubboMethodEntity);
-            }
         }
+
+        TabInfo selectedInfo = TabBar.getSelectionTabInfo();
+        Tab component = (Tab)selectedInfo.getComponent();
+        DubboSetingState settings = DubboSetingState.getInstance();
+        CacheInfo defaultSetting = settings.getDefaultSetting();
+        DubboMethodEntity dubboMethodEntity = new DubboMethodEntity();
+        dubboMethodEntity.setAddress(defaultSetting.getAddress());
+        dubboMethodEntity.setVersion(defaultSetting.getVersion());
+        dubboMethodEntity.setGroup(defaultSetting.getGroup());
+        dubboMethodEntity.setInterfaceName(interfaceName);
+        dubboMethodEntity.setParamObj(initParamArray);
+        dubboMethodEntity.setMethodType(methodType);
+        dubboMethodEntity.setMethodName(methodName);
+        DubboPanel.refreshUI(component.getDubboPanel(), dubboMethodEntity);
     }
 
 }

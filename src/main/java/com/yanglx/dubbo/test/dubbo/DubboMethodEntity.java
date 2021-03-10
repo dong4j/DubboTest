@@ -14,12 +14,15 @@ import lombok.Data;
 @Data
 public class DubboMethodEntity {
 
+    private String id;
     /** Interface name */
     private String interfaceName;
     /** Method name */
     private String methodName;
     /** Version */
     private String version;
+    /** Group */
+    private String group;
     /** Method type */
     private String[] methodType;
     /** Param obj */

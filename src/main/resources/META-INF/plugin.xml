@@ -1,11 +1,7 @@
 <idea-plugin>
     <id>com.yanglx</id>
     <name>DubboTest</name>
-    <version>1.0</version>
     <vendor email="dev_ylx@163.com" url="">yanglx</vendor>
-
-    <description><![CDATA[DubboTest. Will be replaced by gradle build]]></description>
-    <change-notes><![CDATA[REPLACED BY pluginDescription.html]]></change-notes>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
@@ -21,6 +17,9 @@
         <intentionAction>
             <className>com.yanglx.dubbo.test.action.DubboTestIntentionAction</className>
         </intentionAction>
+        <applicationConfigurable parentId="tools" instance="com.yanglx.dubbo.test.config.AppSettingsConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="DubboTest"/>
     </extensions>
 
     <actions>
@@ -30,7 +29,7 @@
                 description="DubboInvokerFrameOpen"
                 icon="/icons/dubbo.svg"
                 popup="true">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>
